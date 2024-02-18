@@ -8,6 +8,5 @@ linters-settings:
         allow: [
           "testing",
           "fmt",
-          "slices",
           "github.com/stretchr/testify/require",
         ]

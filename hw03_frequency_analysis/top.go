@@ -1,7 +1,7 @@
 package hw03frequencyanalysis
 
 import (
-	"slices"
+	"sort"
 	"strings"
 )
 
@@ -27,10 +27,7 @@ func Top10(s string) []string {
 		return []string{}
 	}
 
-	s = strings.ReplaceAll(s, "\n", " ")
-	s = strings.ReplaceAll(s, "\t", " ")
-
-	words := strings.Split(s, " ")
+	words := strings.Fields(s)
 
 	m := make(map[string]int)
 	for _, word := range words {
@@ -41,17 +38,11 @@ func Top10(s string) []string {
 	}
 	sl := wordsToSlice(m)
 
-	slices.SortFunc[[]WordFrequency](sl, func(a, b WordFrequency) int {
-		if a.fr == b.fr {
-			return strings.Compare(a.w, b.w)
-		}
-		switch {
-		case a.fr > b.fr:
-			return -1
-		case a.fr < b.fr:
-			return 1
-		default:
-			return 0
+	sort.Slice(sl, func(i, j int) bool {
+		if sl[i].fr == sl[j].fr {
+			return sl[i].w < sl[j].w
+		} else {
+			return sl[i].fr > sl[j].fr
 		}
 	})
 
