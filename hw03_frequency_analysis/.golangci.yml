@@ -1,0 +1,12 @@
+run:
+  tests: true
+
+linters-settings:
+  depguard:
+    rules:
+      main:
+        allow: [
+          "testing",
+          "fmt",
+          "github.com/stretchr/testify/require",
+        ]
