@@ -33,15 +33,15 @@ func (c *lruCache) Set(key Key, value interface{}) bool {
 		v.Value = KeyValue{key: key, value: value}
 		c.queue.MoveToFront(v)
 	} else {
-		newListItem := c.queue.PushFront(KeyValue{key: key, value: value})
-		c.items[key] = newListItem
-		if c.queue.Len() > c.capacity {
+		if c.queue.Len() == c.capacity {
 			last := c.queue.Back()
 			c.queue.Remove(last)
 			if kv, ok := last.Value.(KeyValue); ok {
 				delete(c.items, kv.key)
 			}
 		}
+		newListItem := c.queue.PushFront(KeyValue{key: key, value: value})
+		c.items[key] = newListItem
 		return false
 	}
 	return true
@@ -60,8 +60,6 @@ func (c *lruCache) Get(key Key) (interface{}, bool) {
 }
 
 func (c *lruCache) Clear() {
-	for k, v := range c.items {
-		delete(c.items, k)
-		c.queue.Remove(v)
-	}
+	c.queue = NewList()
+	c.items = make(map[Key]*ListItem, c.capacity)
 }
