@@ -11,17 +11,12 @@ var ErrErrorsLimitExceeded = errors.New("errors limit exceeded")
 type Task func() error
 
 func Run(tasks []Task, n, m int) error {
-	workersCount := n
-	if workersCount > len(tasks) {
-		workersCount = len(tasks)
-	}
-
 	job := make(chan Task)
 
 	var wg sync.WaitGroup
 	var errCount int32
 
-	for i := 0; i < workersCount; i++ {
+	for i := 0; i < n; i++ {
 		wg.Add(1)
 
 		go func(wg *sync.WaitGroup) {
