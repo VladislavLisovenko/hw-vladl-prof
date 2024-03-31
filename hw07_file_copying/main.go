@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 )
 
 var (
@@ -10,13 +11,16 @@ var (
 )
 
 func init() {
-	flag.StringVar(&from, "from", "", "file to read from")
-	flag.StringVar(&to, "to", "", "file to write to")
-	flag.Int64Var(&limit, "limit", 0, "limit of bytes to copy")
-	flag.Int64Var(&offset, "offset", 0, "offset in input file")
+	flag.StringVar(&from, "from", "testdata/input.txt", "file to read from")
+	flag.StringVar(&to, "to", "sampleoutput.txt", "file to write to")
+	flag.Int64Var(&limit, "limit", -600, "limit of bytes to copy")
+	flag.Int64Var(&offset, "offset", -1000, "offset in input file")
 }
 
 func main() {
 	flag.Parse()
-	// Place your code here.
+	err := Copy(from, to, offset, limit)
+	if err != nil {
+		fmt.Println(err)
+	}
 }
