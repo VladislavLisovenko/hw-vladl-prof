@@ -23,10 +23,10 @@ func tests() []struct {
 		mustBeError bool
 	}{
 		{
-			descr:       "limit 0, offset 0, filesize is 6742",
+			descr:       "limit 0, offset 0, filesize is 6617",
 			limit:       0,
 			offset:      0,
-			expected:    6742,
+			expected:    6617,
 			mustBeError: false,
 		},
 		{
@@ -37,10 +37,10 @@ func tests() []struct {
 			mustBeError: false,
 		},
 		{
-			descr:       "limit 10000, offset 0, filesize is 6742",
+			descr:       "limit 10000, offset 0, filesize is 6617",
 			limit:       10000,
 			offset:      0,
-			expected:    6742,
+			expected:    6617,
 			mustBeError: false,
 		},
 		{
@@ -61,7 +61,7 @@ func tests() []struct {
 			descr:       "limit 0, offset 1000, filesize is 5742",
 			limit:       0,
 			offset:      1000,
-			expected:    5742,
+			expected:    5617,
 			mustBeError: false,
 		},
 	}

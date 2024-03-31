@@ -50,7 +50,7 @@ func Copy(fromPath, toPath string, offset, limit int64) error {
 	}
 
 	var totalRead int64 = 0
-	bufSize := 1024
+	bufSize := 1024 * 1024
 	buf := make([]byte, bufSize)
 
 	for {
