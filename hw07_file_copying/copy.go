@@ -49,24 +49,24 @@ func Copy(fromPath, toPath string, offset, limit int64) error {
 		}
 	}
 
-	totalRead := 0
+	var totalRead int64 = 0
 	bufSize := 1024
 	buf := make([]byte, bufSize)
 
 	for {
 		nRead := 0
-		if limit > 0 && int64(totalRead+bufSize) > limit {
+		if limit > 0 && totalRead+int64(bufSize) > limit {
 			nRead, err = srcFile.Read(buf[:limit-int64(totalRead)])
 		} else {
 			nRead, err = srcFile.Read(buf)
 		}
-		totalRead += nRead
+		totalRead += int64(nRead)
 		if nRead > 0 {
 			_, err := dstFile.Write(buf[:nRead])
 			if err != nil {
 				return err
 			}
-			fmt.Printf("Copied %d from %d\n", totalRead, available)
+			fmt.Printf("Copied %.0f %%\n", float64(totalRead*100/available))
 		}
 		if limit > 0 && int64(totalRead) == limit {
 			break
