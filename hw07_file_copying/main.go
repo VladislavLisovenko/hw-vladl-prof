@@ -13,8 +13,8 @@ var (
 func init() {
 	flag.StringVar(&from, "from", "testdata/largefile.txt", "file to read from")
 	flag.StringVar(&to, "to", "sampleoutput.txt", "file to write to")
-	flag.Int64Var(&limit, "limit", -600, "limit of bytes to copy")
-	flag.Int64Var(&offset, "offset", -1000, "offset in input file")
+	flag.Int64Var(&limit, "limit", 0, "limit of bytes to copy")
+	flag.Int64Var(&offset, "offset", 0, "offset in input file")
 }
 
 func main() {

@@ -2,9 +2,10 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"io"
 	"os"
+
+	"github.com/cheggaaa/pb/v3"
 )
 
 var (
@@ -49,35 +50,14 @@ func Copy(fromPath, toPath string, offset, limit int64) error {
 		}
 	}
 
-	var totalRead int64 = 0
-	bufSize := 1024 * 1024
-	buf := make([]byte, bufSize)
-
-	for {
-		nRead := 0
-		if limit > 0 && totalRead+int64(bufSize) > limit {
-			nRead, err = srcFile.Read(buf[:limit-int64(totalRead)])
-		} else {
-			nRead, err = srcFile.Read(buf)
-		}
-		totalRead += int64(nRead)
-		if nRead > 0 {
-			_, err := dstFile.Write(buf[:nRead])
-			if err != nil {
-				return err
-			}
-			fmt.Printf("Copied %.0f %%\n", float64(totalRead*100/available))
-		}
-		if limit > 0 && int64(totalRead) == limit {
-			break
-		}
-		if err != nil {
-			if err != io.EOF {
-				return err
-			}
-			break
-		}
+	reader := io.LimitReader(srcFile, available)
+	bar := pb.Full.Start64(available)
+	barReader := bar.NewProxyReader(reader)
+	_, err = io.CopyN(dstFile, barReader, available)
+	if err != nil {
+		return err
 	}
+	bar.Finish()
 
 	return nil
 }
