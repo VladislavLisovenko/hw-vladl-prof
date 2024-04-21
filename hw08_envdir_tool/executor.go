@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
-	"strings"
 )
 
 // RunCmd runs a command + arguments (cmd) with environment variables from env.
@@ -13,17 +12,17 @@ func RunCmd(cmd []string, env Environment) (returnCode int) {
 		return 0
 	}
 
-	sb := strings.Builder{}
+	envVariables := []string{}
 	for k, v := range env {
 		if v.NeedRemove {
 			os.Unsetenv(k)
 			continue
 		}
-		sb.WriteString(fmt.Sprintf("%s=%s ", k, v.Value))
+		envVariables = append(envVariables, fmt.Sprintf("%s=%s ", k, v.Value))
 	}
 
-	commandText := fmt.Sprint(sb.String(), cmd[0])
-	command := exec.Command(commandText, cmd[1:]...)
+	command := exec.Command(cmd[0], cmd[1:]...)
+	command.Env = envVariables
 
 	if err := command.Start(); err != nil {
 		return exec.ExitError{}.ExitCode()
