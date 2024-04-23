@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"reflect"
 	"testing"
 )
@@ -20,6 +21,10 @@ func TestReadDir(t *testing.T) {
 		dir string
 	}
 	nonEmptyMap := nonEmptyMap()
+	if err := os.MkdirAll("testemptydir", os.ModeDir); err != nil {
+		t.Errorf("MkDir() error = %v, wantErr %v", err, false)
+		return
+	}
 
 	tests := []struct {
 		name    string
