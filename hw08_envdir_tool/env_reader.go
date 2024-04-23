@@ -38,7 +38,7 @@ func ReadDir(dir string) (Environment, error) {
 			NeedRemove: true,
 		}
 		if info.Size() > 0 {
-			file, err := os.Open(dir + "\\" + dirEntry.Name())
+			file, err := os.Open(dir + "/" + dirEntry.Name())
 			if err != nil {
 				return nil, err
 			}
