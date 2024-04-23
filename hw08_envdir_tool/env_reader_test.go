@@ -21,7 +21,7 @@ func TestReadDir(t *testing.T) {
 		dir string
 	}
 	nonEmptyMap := nonEmptyMap()
-	if err := os.MkdirAll("testemptydir", os.ModeDir); err != nil {
+	if err := os.MkdirAll("testemptydir", 0700); err != nil {
 		t.Errorf("MkDir() error = %v, wantErr %v", err, false)
 		return
 	}
