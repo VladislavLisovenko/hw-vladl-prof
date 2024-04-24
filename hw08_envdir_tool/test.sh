@@ -18,7 +18,7 @@ UNSET is ()
 ADDED is (from original env)
 EMPTY is ()
 arguments are arg1=1 arg2=2'
-
+echo $result
 [ "${result}" = "${expected}" ] || (echo -e "invalid output: ${result}" && exit 1)
 
 rm -f go-envdir
