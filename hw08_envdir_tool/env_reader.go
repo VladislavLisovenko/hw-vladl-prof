@@ -48,11 +48,11 @@ func ReadDir(dir string) (Environment, error) {
 			scanner := bufio.NewScanner(file)
 			if scanner.Scan() {
 				content = strings.ReplaceAll(scanner.Text(), "\x00", "\n")
-				content = strings.TrimFunc(content, func(r rune) bool {
-					return r == ' ' || r == '\t'
-				})
-				sl := strings.Split(content, "\n")
-				content = sl[0]
+				//content = strings.TrimFunc(content, func(r rune) bool {
+				//	return r == ' ' || r == '\t'
+				//})
+				//sl := strings.Split(content, "\n")
+				//content = sl[0]
 			}
 			if content != "" {
 				env[envVar] = EnvValue{
