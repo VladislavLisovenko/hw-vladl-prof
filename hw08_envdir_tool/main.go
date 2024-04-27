@@ -19,15 +19,10 @@ func main() {
 		return
 	}
 
-	for k, v := range env {
-		fmt.Printf("%s is (%s)\n", k, v.Value)
-	}
-
-	if len(os.Args) > 3 {
-		fmt.Print("arguments are ", strings.Join(os.Args[4:], " "), "\n")
-	}
-
 	cmd := os.Args[2:]
+	for i := 0; i < len(cmd); i++ {
+		cmd[i] = strings.ReplaceAll(cmd[i], "$(pwd)/", "")
+	}
 	resp := RunCmd(cmd, env)
 	fmt.Println("resp", resp)
 }
