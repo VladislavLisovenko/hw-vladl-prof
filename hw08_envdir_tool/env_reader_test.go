@@ -10,7 +10,7 @@ func nonEmptyMap() map[string]EnvValue {
 	nonEmptyMap := make(map[string]EnvValue)
 	nonEmptyMap["BAR"] = EnvValue{Value: "bar", NeedRemove: false}
 	nonEmptyMap["EMPTY"] = EnvValue{Value: "", NeedRemove: true}
-	nonEmptyMap["FOO"] = EnvValue{Value: "foo", NeedRemove: false}
+	nonEmptyMap["FOO"] = EnvValue{Value: "   foo\nwith new line", NeedRemove: false}
 	nonEmptyMap["HELLO"] = EnvValue{Value: `"hello"`, NeedRemove: false}
 	nonEmptyMap["UNSET"] = EnvValue{Value: "", NeedRemove: true}
 	return nonEmptyMap

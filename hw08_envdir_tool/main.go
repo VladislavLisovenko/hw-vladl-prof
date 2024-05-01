@@ -23,6 +23,5 @@ func main() {
 	for i := 0; i < len(cmd); i++ {
 		cmd[i] = strings.ReplaceAll(cmd[i], "$(pwd)/", "")
 	}
-	resp := RunCmd(cmd, env)
-	fmt.Println("resp", resp)
+	os.Exit(RunCmd(cmd, env))
 }

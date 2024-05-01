@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"os"
 	"os/exec"
 )
@@ -12,25 +12,24 @@ func RunCmd(cmd []string, env Environment) (returnCode int) {
 		return 0
 	}
 
-	envVariables := []string{}
 	for k, v := range env {
 		if v.NeedRemove {
-			os.Unsetenv(k)
-			continue
+			if err := os.Unsetenv(k); err != nil {
+				log.Fatal(err)
+			}
+		} else {
+			if err := os.Setenv(k, v.Value); err != nil {
+				log.Fatal(err)
+			}
 		}
-		envVariables = append(envVariables, fmt.Sprintf("%s=%s ", k, v.Value))
 	}
 
-	//command := exec.Command("/bin/bash", "testdata/echo.sh", "arg1=1", "arg2=2")
 	command := exec.Command(cmd[0], cmd[1:]...)
-	command.Env = envVariables
-	command.Env = append(command.Env, os.Environ()...)
+	command.Stdout = os.Stdout
 
-	output, err := command.CombinedOutput()
-	if err != nil {
-		return exec.ExitError{}.ExitCode()
+	if err := command.Run(); err != nil {
+		return command.ProcessState.ExitCode()
 	}
-	fmt.Println(string(output))
 
-	return 0
+	return command.ProcessState.ExitCode()
 }
