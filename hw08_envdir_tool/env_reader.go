@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -19,7 +20,6 @@ type EnvValue struct {
 func ReadDir(dir string) (Environment, error) {
 	env := make(Environment)
 
-	//dir = strings.ReplaceAll(dir, "$(pwd)/", "")
 	dirEntries, err := os.ReadDir(dir)
 	if err != nil {
 		return nil, err
@@ -39,7 +39,7 @@ func ReadDir(dir string) (Environment, error) {
 			NeedRemove: true,
 		}
 		if info.Size() > 0 {
-			file, err := os.Open(dir + "/" + dirEntry.Name())
+			file, err := os.Open(filepath.Join(dir, dirEntry.Name()))
 			if err != nil {
 				return nil, err
 			}
@@ -49,8 +49,7 @@ func ReadDir(dir string) (Environment, error) {
 			scanner := bufio.NewScanner(file)
 			if scanner.Scan() {
 				content = strings.ReplaceAll(scanner.Text(), "\x00", "\n")
-				content = strings.TrimRight(content, " ")
-				content = strings.TrimRight(content, "\t")
+				content = strings.TrimRight(content, " \t")
 			}
 			if content != "" {
 				env[envVar] = EnvValue{
