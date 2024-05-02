@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strings"
 )
 
 func main() {
@@ -20,8 +19,8 @@ func main() {
 	}
 
 	cmd := os.Args[2:]
-	for i := 0; i < len(cmd); i++ {
-		cmd[i] = strings.ReplaceAll(cmd[i], "$(pwd)/", "")
-	}
+	// for i := 0; i < len(cmd); i++ {
+	// 	cmd[i] = strings.ReplaceAll(cmd[i], "$(pwd)/", "")
+	// }
 	os.Exit(RunCmd(cmd, env))
 }

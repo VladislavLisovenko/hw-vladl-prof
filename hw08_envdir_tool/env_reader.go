@@ -19,7 +19,7 @@ type EnvValue struct {
 func ReadDir(dir string) (Environment, error) {
 	env := make(Environment)
 
-	dir = strings.ReplaceAll(dir, "$(pwd)/", "")
+	//dir = strings.ReplaceAll(dir, "$(pwd)/", "")
 	dirEntries, err := os.ReadDir(dir)
 	if err != nil {
 		return nil, err
@@ -50,6 +50,7 @@ func ReadDir(dir string) (Environment, error) {
 			if scanner.Scan() {
 				content = strings.ReplaceAll(scanner.Text(), "\x00", "\n")
 				content = strings.TrimRight(content, " ")
+				content = strings.TrimRight(content, "\t")
 			}
 			if content != "" {
 				env[envVar] = EnvValue{
