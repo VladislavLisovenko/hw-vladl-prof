@@ -1,3 +1,4 @@
+//go:build !bench
 // +build !bench
 
 package hw10programoptimization
@@ -36,4 +37,44 @@ func TestGetDomainStat(t *testing.T) {
 		require.NoError(t, err)
 		require.Equal(t, DomainStat{}, result)
 	})
+}
+
+func TestGetDomainStat1(t *testing.T) {
+	tests := []struct {
+		descr         string
+		data          string
+		expectedError bool
+		expectedValue DomainStat
+	}{
+		{
+			descr:         "invalid json",
+			data:          `{"Howard Mendoza","Username":"0Oliver","Email":"aliquid_qui_ea@Browsedrive.gov","Phone":"6-866-899-36-79","Password":"InAQJvsq","Address":"Blackbird Place 25"}`,
+			expectedError: true,
+			expectedValue: nil,
+		},
+		{
+			descr:         "invalid email",
+			data:          `{"Id":1,"Name":"Howard Mendoza","Username":"0Oliver","Email":"aliquid_qui_eaBrowsedrive.gov","Phone":"6-866-899-36-79","Password":"InAQJvsq","Address":"Blackbird Place 25"}`,
+			expectedError: false,
+			expectedValue: make(DomainStat),
+		},
+		{
+			descr:         "invalid email - doesn't contain suffix",
+			data:          `{"Id":1,"Name":"Howard Mendoza","Username":"0Oliver","Email":"aliquid_qui_ea@Browsedrive","Phone":"6-866-899-36-79","Password":"InAQJvsq","Address":"Blackbird Place 25"}`,
+			expectedError: false,
+			expectedValue: make(DomainStat),
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.descr, func(t *testing.T) {
+			got, err := GetDomainStat(bytes.NewBufferString(tt.data), "com")
+			if tt.expectedError {
+				require.Error(t, err)
+			} else {
+				require.NoError(t, err)
+				require.Equal(t, tt.expectedValue, got)
+			}
+		})
+	}
 }
