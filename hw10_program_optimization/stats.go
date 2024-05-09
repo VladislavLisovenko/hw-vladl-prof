@@ -2,7 +2,6 @@ package hw10programoptimization
 
 import (
 	"bufio"
-	"fmt"
 	"io"
 	"strings"
 
@@ -22,52 +21,33 @@ type User struct {
 type DomainStat map[string]int
 
 func GetDomainStat(r io.Reader, domain string) (DomainStat, error) {
-	u, err := getUsers(r)
-	if err != nil {
-		return nil, fmt.Errorf("get users error: %w", err)
-	}
-	return countDomains(u, domain)
-}
-
-type users [100_000]User
-
-func getUsers(r io.Reader) (users, error) {
-	var result users
-	var err error
-
+	domainStat := make(DomainStat)
 	buffer := bufio.NewReader(r)
-	userCount := 0
 	lastLine := false
 	for !lastLine {
 		var line []byte
 
-		line, err = buffer.ReadBytes(10)
+		line, err := buffer.ReadBytes(10)
 		if err == io.EOF {
 			lastLine = true
 		} else if err != nil {
-			return result, nil
+			return nil, err
 		}
 
 		var user User
 		if err = easyjson.Unmarshal(line, &user); err != nil {
-			return result, err
+			return nil, err
 		}
-		result[userCount] = user
-		userCount++
-	}
+		email := user.Email
 
-	return result, nil
-}
-
-func countDomains(u users, domain string) (DomainStat, error) {
-	result := make(DomainStat)
-
-	for _, user := range u {
-
-		if strings.HasSuffix(user.Email, "."+domain) {
-			d := strings.ToLower(strings.SplitN(user.Email, "@", 2)[1])
-			result[d]++
+		if strings.HasSuffix(email, "."+domain) {
+			emailParts := strings.SplitN(email, "@", 2)
+			if len(emailParts) > 1 {
+				d := strings.ToLower(emailParts[1])
+				domainStat[d]++
+			}
 		}
 	}
-	return result, nil
+
+	return domainStat, nil
 }
