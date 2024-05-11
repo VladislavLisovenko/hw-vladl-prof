@@ -53,12 +53,18 @@ func main() {
 	defer cancel()
 
 	go func() {
-		client.Send()
+		err := client.Send()
+		if err != nil {
+			log.Fatalln("error sending")
+		}
 		cancel()
 	}()
 
 	go func() {
-		client.Receive()
+		err := client.Receive()
+		if err != nil {
+			log.Fatalln("error receiving")
+		}
 		cancel()
 	}()
 
