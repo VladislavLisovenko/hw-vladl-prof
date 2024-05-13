@@ -36,7 +36,6 @@ func (c *client) Connect() error {
 	if err != nil {
 		return fmt.Errorf("connection error: %w", err)
 	}
-	fmt.Printf("connected to %s\n", c.address)
 	c.connection = connection
 
 	return nil
@@ -46,7 +45,6 @@ func (c *client) Send() error {
 	if _, err := io.Copy(c.connection, c.in); err != nil {
 		return fmt.Errorf("send error: %w", err)
 	}
-	fmt.Println("data sent")
 	return nil
 }
 
@@ -54,7 +52,6 @@ func (c *client) Receive() error {
 	if _, err := io.Copy(c.out, c.connection); err != nil {
 		return fmt.Errorf("receive error: %w", err)
 	}
-	fmt.Println("data were received")
 	return nil
 }
 
@@ -64,6 +61,5 @@ func (c *client) Close() error {
 			return fmt.Errorf("connection closing error: %w", err)
 		}
 	}
-	fmt.Println("connection closed")
 	return nil
 }

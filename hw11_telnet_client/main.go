@@ -40,8 +40,6 @@ func main() {
 		}
 	}
 
-	fmt.Printf("host: %s, port: %d, duration: %v\n", host, port, timeout)
-
 	client := NewTelnetClient(fmt.Sprintf("%s:%d", host, port), timeout, os.Stdin, os.Stdout)
 
 	if err := client.Connect(); err != nil {
