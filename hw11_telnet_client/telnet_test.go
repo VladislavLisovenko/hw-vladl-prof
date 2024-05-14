@@ -62,4 +62,12 @@ func TestTelnetClient(t *testing.T) {
 
 		wg.Wait()
 	})
+
+	t.Run("wrong server, must be error", func(t *testing.T) {
+		in := &bytes.Buffer{}
+		out := &bytes.Buffer{}
+
+		client := NewTelnetClient("111.1.1.1:", time.Second, io.NopCloser(in), out)
+		require.Error(t, client.Connect())
+	})
 }
