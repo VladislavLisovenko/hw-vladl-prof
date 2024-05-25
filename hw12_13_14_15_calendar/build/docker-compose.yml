@@ -1,0 +1,41 @@
+version: "3.9"
+services:
+  postgres:
+    build:
+      context: .
+      dockerfile: ./build/Dockerfile.postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=events
+    healthcheck:
+      test: ["CMD", "pg_isready", "--username", "postgres", "--dbname", "events"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # goapptest:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.golangtest
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  #   ports:
+  #     - "8080:8080"
+
+  # goapp:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.golang
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  #     # goapptest:
+  #     #   condition: service_completed_successfully
+  #   ports:
+  #     - "8080:8080"

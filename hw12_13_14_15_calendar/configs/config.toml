@@ -1,5 +1,16 @@
-[logger]
-level = "INFO"
+[loggers]
+level = "ingo" # possible values: info, warn, error, debug
 
-# TODO
-# ...
+[storage]
+type = "inmemory" # possible values: inmemory, postgres
+
+[storage.postgres]
+dataSourceName = "postgres://postgres:postgres@localhost:5432/eventsdb"
+
+[httpserver]
+host = "localhost"
+port = "12345"
+
+[grpcserver]
+host = "localhost"
+port = "23456"

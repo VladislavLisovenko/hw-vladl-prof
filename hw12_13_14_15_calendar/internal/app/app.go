@@ -2,25 +2,56 @@ package app
 
 import (
 	"context"
+	"time"
+
+	"github.com/VladislavLisovenko/hw-vladl-prof/hw12_13_14_15_calendar/internal/storage"
 )
 
-type App struct { // TODO
+type App struct {
+	log     Logger
+	storage Storage
 }
 
-type Logger interface { // TODO
+type Logger interface {
+	Info(msg string)
+	Warn(msg string)
+	Error(msg string)
+	Debug(msg string)
 }
 
-type Storage interface { // TODO
+type Storage interface {
+	Add(ctx context.Context, ev storage.Event) error
+	Update(ctx context.Context, ev storage.Event) error
+	Delete(ctx context.Context, ev storage.Event) error
+	ListDayEvents(ctx context.Context, startTime time.Time) ([]storage.Event, error)
+	ListWeekEvents(ctx context.Context, startTime time.Time) ([]storage.Event, error)
+	ListMonthEvents(ctx context.Context, startTime time.Time) ([]storage.Event, error)
 }
 
 func New(logger Logger, storage Storage) *App {
-	return &App{}
+	return &App{log: logger, storage: storage}
 }
 
-func (a *App) CreateEvent(ctx context.Context, id, title string) error {
-	// TODO
-	return nil
-	// return a.storage.CreateEvent(storage.Event{ID: id, Title: title})
+func (a *App) CreateEvent(ctx context.Context, ev storage.Event) error {
+	return a.storage.Add(ctx, ev)
 }
 
-// TODO
+func (a *App) UpdateEvent(ctx context.Context, ev storage.Event) error {
+	return a.storage.Update(ctx, ev)
+}
+
+func (a *App) DeleteEvent(ctx context.Context, ev storage.Event) error {
+	return a.storage.Delete(ctx, ev)
+}
+
+func (a *App) ListDayEvents(ctx context.Context, startTime time.Time) ([]storage.Event, error) {
+	return a.storage.ListDayEvents(ctx, startTime)
+}
+
+func (a *App) ListWeekEvents(ctx context.Context, startTime time.Time) ([]storage.Event, error) {
+	return a.storage.ListWeekEvents(ctx, startTime)
+}
+
+func (a *App) ListMonthEvents(ctx context.Context, startTime time.Time) ([]storage.Event, error) {
+	return a.storage.ListMonthEvents(ctx, startTime)
+}

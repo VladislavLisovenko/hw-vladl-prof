@@ -7,6 +7,9 @@ LDFLAGS := -X main.release="develop" -X main.buildDate=$(shell date -u +%Y-%m-%d
 build:
 	go build -v -o $(BIN) -ldflags "$(LDFLAGS)" ./cmd/calendar
 
+postgres:
+	docker compose -f ./build/docker-compose.yml --project-directory .  up --force-recreate
+
 run: build
 	$(BIN) -config ./configs/config.toml
 
