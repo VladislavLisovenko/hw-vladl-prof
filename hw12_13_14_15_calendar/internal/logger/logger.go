@@ -1,20 +1,44 @@
 package logger
 
-import "fmt"
+import (
+	"os"
+	"strings"
 
-type Logger struct { // TODO
+	"github.com/rs/zerolog"
+)
+
+type Logger struct {
+	log *zerolog.Logger
 }
 
 func New(level string) *Logger {
-	return &Logger{}
+	switch strings.ToLower(level) {
+	case "debug":
+		zerolog.SetGlobalLevel(zerolog.DebugLevel)
+	case "error":
+		zerolog.SetGlobalLevel(zerolog.ErrorLevel)
+	case "warn":
+		zerolog.SetGlobalLevel(zerolog.WarnLevel)
+	default:
+		zerolog.SetGlobalLevel(zerolog.InfoLevel)
+	}
+
+	logger := zerolog.New(os.Stdout)
+	return &Logger{log: &logger}
 }
 
-func (l Logger) Info(msg string) {
-	fmt.Println(msg)
+func (l *Logger) Info(msg string) {
+	l.log.Info().Msg(msg)
 }
 
-func (l Logger) Error(msg string) {
-	// TODO
+func (l *Logger) Error(msg string) {
+	l.log.Error().Msg(msg)
 }
 
-// TODO
+func (l *Logger) Warn(msg string) {
+	l.log.Warn().Msg(msg)
+}
+
+func (l *Logger) Debug(msg string) {
+	l.log.Debug().Msg(msg)
+}
