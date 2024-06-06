@@ -9,5 +9,5 @@ type Event struct {
 	ExpirationDate           time.Time
 	Description              string
 	UserID                   string
-	SecondsUntilNotification int
+	SecondsUntilNotification int64
 }

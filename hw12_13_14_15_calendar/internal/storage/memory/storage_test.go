@@ -16,7 +16,7 @@ func TestStorage(t *testing.T) {
 	t.Run("add", func(t *testing.T) {
 		stor := New()
 		ev := storage.Event{
-			ID:    uuid.New().String(),
+			ID:    uuid.NewString(),
 			Title: "test",
 		}
 		err := stor.Add(ctx, ev)
@@ -27,7 +27,7 @@ func TestStorage(t *testing.T) {
 	t.Run("delete", func(t *testing.T) {
 		stor := New()
 		ev := storage.Event{
-			ID:    uuid.New().String(),
+			ID:    uuid.NewString(),
 			Title: "test",
 		}
 		err := stor.Add(ctx, ev)
@@ -41,7 +41,7 @@ func TestStorage(t *testing.T) {
 	t.Run("update", func(t *testing.T) {
 		stor := New()
 		ev := storage.Event{
-			ID:    uuid.New().String(),
+			ID:    uuid.NewString(),
 			Title: "test",
 		}
 		err := stor.Add(ctx, ev)
@@ -59,12 +59,12 @@ func TestStorage(t *testing.T) {
 	t.Run("get list", func(t *testing.T) {
 		stor := New()
 		ev := storage.Event{
-			ID:        uuid.New().String(),
+			ID:        uuid.NewString(),
 			Title:     "time.Minute",
 			EventDate: time.Now().Add(time.Minute),
 		}
 		se := storage.Event{
-			ID:        uuid.New().String(),
+			ID:        uuid.NewString(),
 			Title:     "time.Minute * 2",
 			EventDate: time.Now().Add(time.Minute * 2),
 		}

@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "./;internalgrpc";
+
+package event;
+
+message GrpcEvent {
+    string ID = 1;
+    string Title = 2;
+    google.protobuf.Timestamp EventDate = 3;
+    google.protobuf.Timestamp ExpirationDate = 4;
+    string Description = 5;
+    string UserID = 6;
+    int64 SecondsUntilNotification = 7;
+}
