@@ -6,11 +6,13 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/VladislavLisovenko/hw-vladl-prof/hw12_13_14_15_calendar/internal/app"
 	"github.com/VladislavLisovenko/hw-vladl-prof/hw12_13_14_15_calendar/internal/storage"
 	"github.com/go-chi/chi"
 )
 
 type Server struct {
+	app    *app.App
 	server *http.Server
 	logger Logger
 }
@@ -43,9 +45,9 @@ func NewServer(logger Logger, app Application, host string, port string) *Server
 
 	router.Get("/", server.Hello)
 	router.Get("/hello", server.Hello)
-	router.Post("/events", server.AddEvent)
-	router.Put("/events/{id:[0-9a-z-]+}", server.UpdateEvent)
-	router.Delete("/events/{id:[0-9a-z-]+}", server.DeleteEvent)
+	router.Put("/events", server.AddEvent)
+	router.Post("/events", server.UpdateEvent)
+	router.Delete("/events", server.DeleteEvent)
 	router.Get("/events/day", server.ListDayEvents)
 	router.Get("/events/week", server.ListWeekEvents)
 	router.Get("/events/month", server.ListMonthEvents)

@@ -9,7 +9,7 @@ import (
 
 type App struct {
 	log     Logger
-	storage Storage
+	Storage Storage
 }
 
 type Logger interface {
@@ -29,29 +29,29 @@ type Storage interface {
 }
 
 func New(logger Logger, storage Storage) *App {
-	return &App{log: logger, storage: storage}
+	return &App{log: logger, Storage: storage}
 }
 
 func (a *App) CreateEvent(ctx context.Context, ev storage.Event) error {
-	return a.storage.Add(ctx, ev)
+	return a.Storage.Add(ctx, ev)
 }
 
 func (a *App) UpdateEvent(ctx context.Context, ev storage.Event) error {
-	return a.storage.Update(ctx, ev)
+	return a.Storage.Update(ctx, ev)
 }
 
 func (a *App) DeleteEvent(ctx context.Context, ev storage.Event) error {
-	return a.storage.Delete(ctx, ev)
+	return a.Storage.Delete(ctx, ev)
 }
 
 func (a *App) ListDayEvents(ctx context.Context, startTime time.Time) ([]storage.Event, error) {
-	return a.storage.ListDayEvents(ctx, startTime)
+	return a.Storage.ListDayEvents(ctx, startTime)
 }
 
 func (a *App) ListWeekEvents(ctx context.Context, startTime time.Time) ([]storage.Event, error) {
-	return a.storage.ListWeekEvents(ctx, startTime)
+	return a.Storage.ListWeekEvents(ctx, startTime)
 }
 
 func (a *App) ListMonthEvents(ctx context.Context, startTime time.Time) ([]storage.Event, error) {
-	return a.storage.ListMonthEvents(ctx, startTime)
+	return a.Storage.ListMonthEvents(ctx, startTime)
 }
